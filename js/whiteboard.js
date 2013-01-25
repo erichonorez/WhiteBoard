@@ -105,29 +105,34 @@ function initWebSocket() {
     socket.addEventListener("message", function (event) {
         var data = JSON.parse(event.data);
         if (null == data.type) { return; }
-        if (data.type == "messagesHistory") {
-            var factory = new MessageFactory();
-            for (var i = 0; i < data.data.length; i++) {
-                viewModel.messages.push(factory.fromJSON(data.data[i]));
-            }
-        } else if (data.type == "message") {
-            var factory = new MessageFactory();
-            viewModel.messages.push(factory.fromJSON(data));
-        } else if (data.type == "coordinates") {
-            $("#activity").html("");
-            context.beginPath();
-            var coordinates = data.coordinates.split(",");
-            var firstCoordinates = coordinates[0].split("#");
-            context.moveTo(firstCoordinates[0], firstCoordinates[1]);
-            for (var i = 1; i < coordinates.length; i++) {
-                var values = coordinates[i].split("#");
-                context.lineTo(values[0], values[1]);
-                context.stroke();
-            }
-        } else if (data.type == "linesHistory") {
-            for (var i = 0; i < data.data.length; i++) {
+        switch (data.type) {
+            case "messagesHistory":
+                var factory = new MessageFactory();
+                for (var i = 0; i < data.data.length; i++) {
+                    viewModel.messages.push(factory.fromJSON(data.data[i]));
+                }
+                break;
+            case "linesHistory":
+                for (var i = 0; i < data.data.length; i++) {
+                    context.beginPath();
+                    var coordinates = data.data[i].coordinates.split(",");
+                    var firstCoordinates = coordinates[0].split("#");
+                    context.moveTo(firstCoordinates[0], firstCoordinates[1]);
+                    for (var i = 1; i < coordinates.length; i++) {
+                        var values = coordinates[i].split("#");
+                        context.lineTo(values[0], values[1]);
+                        context.stroke();
+                    }
+                }
+                break;
+            case "message":
+                var factory = new MessageFactory();
+                viewModel.messages.push(factory.fromJSON(data));
+                break;
+            case "coordinates":
+                $("#activity").html("");
                 context.beginPath();
-                var coordinates = data.data[i].coordinates.split(",");
+                var coordinates = data.coordinates.split(",");
                 var firstCoordinates = coordinates[0].split("#");
                 context.moveTo(firstCoordinates[0], firstCoordinates[1]);
                 for (var i = 1; i < coordinates.length; i++) {
@@ -135,13 +140,15 @@ function initWebSocket() {
                     context.lineTo(values[0], values[1]);
                     context.stroke();
                 }
-            }
-        } else if (data.type == "activity") {
-            $("#activity").html(data.user + " is " + data.action + "...");
-        } else if (data.type == "command") {
-            if (data.action == "clean") {
-                context.clearRect(0, 0, canvas.width, canvas.height);
-            }
+                break;
+            case "activity":
+                $("#activity").html(data.user + " is " + data.action + "...");
+                break;
+            case "command":
+                if (data.action == "clean") {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                }
+                break;
         }
     });
     socket.addEventListener("error", function (event) { /* do something on error */});
