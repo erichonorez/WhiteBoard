@@ -1,0 +1,35 @@
+body {
+    position: relative;
+    padding-top: 60px;
+}
+#board {
+    border: 1px solid #edecec;
+    width: 100%;
+    height: 100%;
+}
+#messages {
+    height: 350px;
+    overflow-y:scroll;
+    margin-left: 0px;
+}
+#messages li {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+.message {
+    border-bottom: 1px solid #ededed;
+}
+.message .message-date {
+    font-size: smaller;
+}
+.message .message-user {
+    font-weight: bold;
+}
+.message .message-text {
+    font-style: italic;
+}
+.board-activity {
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
