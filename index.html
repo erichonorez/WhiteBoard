@@ -29,7 +29,7 @@
     <div class="container-fluid" data-bind="visible: username() != null">
         <div class="row-fluid">
             <div class="span8" id="board-container">
-                <canvas id="board">
+                <canvas id="board" width="810" height="580">
                     <!-- fallback -->
                     Your browser doesn't support canvas!
                 </canvas>
@@ -38,8 +38,7 @@
                         <button id="clear" class="btn">Clear!</button>
                     </div>
                     <div class="span11">
-                        <div class="alert board-activity">
-                            Someone is drawing...
+                        <div class="alert board-activity" id="activity">
                         </div>
                     </div>
                 </div>
@@ -49,7 +48,7 @@
                     <ul id="messages" data-bind="foreach: messages">
                         <li>
                             <div class="message">
-                                <span class="message-date" data-bind="text: time()"></span>
+                                <span class="message-date" data-bind="text: formattedDate()"></span>
                                 <span class="message-user" data-bind="text: user"></span>
                                 <span class="message-text" data-bind="text: text"></span>
                             </div>
@@ -59,7 +58,7 @@
                 <div class="row-fluid">
                     <form id="form-new-message">
                         <div class="row-fluid">
-                            <textarea class="span12" name="message" placeholder="type your message here..." required="required"></textarea>
+                            <textarea class="span12" name="message" placeholder="type your message here..." required="required" id="message"></textarea>
                         </div>
                         <div class="row-fluid">
                             <input type="submit" class="btn btn-primary pull-right" value="Send" />
