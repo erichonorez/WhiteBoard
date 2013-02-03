@@ -3,7 +3,7 @@
  */
 var canvas, context, socket, username, viewModel = null;
 var coordinates = "";
-var url = "ws://localhost:1337/";
+var url = "ws://localhost:8888/";
 var isDrawing = false;
 /**
  * Helpers functions
